@@ -3,7 +3,7 @@ A python 3 program to work with Citrix's Sharefile API.
 
 This is a (mostly) python 3 compatible version of Citrix's published python example interacting with their web API.
 
-The original source can be found here:
+The original (python 2) source can be found here:
 http://api.sharefile.com/rest/samples/python.aspx
 
 
