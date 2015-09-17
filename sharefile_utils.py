@@ -66,7 +66,7 @@ def authenticate(hostname, client_id, client_secret, username, password):
               'username':username, 'password':password}
 
     url="https://"+hostname+uri_path
-    response = requests.post(url,params,verify=False)
+    response = requests.post(url,params)
 
     print(response.status_code, response.reason)
     token = None
@@ -95,12 +95,16 @@ def get_root(token, get_children=False):
         uri_path+='?$expand=Children'
     #print('GET %s%s'%(get_hostname(token), uri_path))
     url= "https://"+get_hostname(token)+uri_path
-    # http = httplib.HTTPSConnection(get_hostname(token))
-    # http.request('GET', uri_path, headers=get_authorization_header(token))
-    # response = http.getresponse()
-    header=get_authorization_header(token)
-    response=requests.get(url,headers=header,verify=False)
 
+    # httplib.HTTPConnection.debuglevel = 1
+    # logging.basicConfig()
+    # logging.getLogger().setLevel(logging.DEBUG)
+    # requests_log = logging.getLogger("requests.packages.urllib3")
+    # requests_log.setLevel(logging.DEBUG)
+    # requests_log.propagate = True
+
+    header=get_authorization_header(token)
+    response=session.get(url,headers=header,verify=True)
     print(response.status_code, response.reason)
     items = response.json()
     print(items['Id'], items['CreationDate'], items['Name'])
@@ -114,7 +118,7 @@ def get_item_by_path(token,file_path):
     url = 'https://'+get_hostname(token)+uri_path
     print('GET ' +'https://'+ get_hostname(token) + uri_path)
 
-    response = requests.get(url,headers=get_authorization_header(token))
+    response = session.get(url,headers=get_authorization_header(token))
     out=response.json()
 
     print(response.status_code, response.reason)
@@ -150,20 +154,16 @@ def get_folder_with_query_parameters(token, item_id):
     string item_id - a folder id """
 
     uri_path = '/sf/v3/Items(%s)?$expand=Children&$select=Id,Name,Children/Id,Children/Name,Children/CreationDate'%(item_id)
-    print('GET %s%s'%(get_hostname(token), uri_path))
-    http = httplib.HTTPSConnection(get_hostname(token))
-    http.request('GET', uri_path, headers=get_authorization_header(token))
-    response = http.getresponse()
-
-    print(response.status, response.reason)
-    items = json.loads(response.read().decode('utf-8'))
+    url= "https://"+get_hostname(token)+uri_path
+    response = session.get(url,headers=get_authorization_header(token))
+    print(response.status_code, response.reason)
+    items = response.json()
     #print(items['Name'], items['Id']) #Print parent/root node (direct call).
     if 'Children' in items:
         children = items['Children']
         for child in children:
            print(child['Name'], child['Id'])
 
-    http.close()
     return children
 
 def create_folder(token, parent_id, name, description):
