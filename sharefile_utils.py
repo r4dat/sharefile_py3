@@ -14,9 +14,38 @@ import mimetypes
 import urllib.parse as urlparse
 import csv
 import time
-import requests
 import os
 import glob
+import socket
+import requests
+
+# Hack to to deal with ethernet vs wlan
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.poolmanager import PoolManager
+
+class SourceAddressAdapter(HTTPAdapter):
+    def __init__(self, source_address, **kwargs):
+        self.source_address = source_address
+
+        super(SourceAddressAdapter, self).__init__(**kwargs)
+
+    def init_poolmanager(self, connections, maxsize, block=False):
+        self.poolmanager = PoolManager(num_pools=connections,
+                                       maxsize=maxsize,
+                                       block=block,
+                                       source_address=self.source_address)
+
+#Get wireless IP (un-firewalled)
+IP = socket.gethostbyname_ex(socket.gethostname())[2]
+for add in IP:
+    if add.startswith('192'):
+        IP = add
+        break
+# Create a single session (instance) with bound IP. Tuple is (IP,Port) with port 0 denoting random and high.
+session = requests.Session()
+session.mount('http://', SourceAddressAdapter((IP,0)))
+session.mount('https://', SourceAddressAdapter((IP,0)))
+
 
 
 
