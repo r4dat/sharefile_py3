@@ -410,16 +410,17 @@ if __name__ == '__main__':
 
 
 
-    sharefile_base_path = '/remote/path'
+    sharefile_base_path = '/remote/path/'
     report_path = 'C:\local_reports'
+    #Sharefile base path must have slash termination. E.g. /home/
 
     token = authenticate(hostname, client_id, client_secret, username, password)
     if token:
         print(get_root(token,True))
 
-        #Return Dict of Subfolders in Orgs w/key 'Name' and val 'Id'.
-        #Hard coded folder id below is relative root directory.
-        sharefile_folder_list = get_folder_with_query_parameters(token,'folder_id')
+        #Return Dict of Subfolders in Org w/key 'Name' and val 'Id'.
+        sharefile_base_id = get_item_by_path(token,sharefile_base_path)
+        sharefile_folder_list = get_folder_with_query_parameters(token,sharefile_base_id)
         folders = {}
         missing = []
         for item in sharefile_folder_list:
