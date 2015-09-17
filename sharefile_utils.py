@@ -402,17 +402,16 @@ def create_share_link(token, item_id, filename):
 
 if __name__ == '__main__':
     hostname = "hostname.sharefile.com"
-    # Leave UN and PW for now, best practice is to create an API/python only account.
     username = "user"
     password = "password"
     client_id = "client_id"
     client_secret = "client_secret"
 
 
-
+    # Sharefile base path must have slash termination. E.g. /home/
     sharefile_base_path = '/remote/path/'
     report_path = 'C:\local_reports'
-    #Sharefile base path must have slash termination. E.g. /home/
+
 
     token = authenticate(hostname, client_id, client_secret, username, password)
     if token:
@@ -441,7 +440,7 @@ if __name__ == '__main__':
         print(missing)
         print('Number Missing from Upload:'+ str(missing.__len__()) )
 
-        #Get new uploaded file IDs by path...
+        # Get new uploaded file IDs by path.
         sharefile_links_file=''.join([report_path,'\\sharefile_links.csv'])
         writer=csv.writer(open(sharefile_links_file,'w',newline=''))
         #headers
