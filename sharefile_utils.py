@@ -374,7 +374,7 @@ def create_client(token, email, firstname, lastname, company,
     http.close()
 
 
-def create_share_link(token, item_id, req_user_info,filename):
+def create_share_link(token, item_id, filename):
     uri_path = '/sf/v3/Shares?notify=false '
     print('GET %s%s'%(get_hostname(token), uri_path))
 
@@ -383,7 +383,7 @@ def create_share_link(token, item_id, req_user_info,filename):
     "Title":filename,
     "Items": [{"Id":item_id}],
     "Recipients":[],
-    "ExpirationDate": "2015-06-16",
+    "ExpirationDate": "2016-06-30",
     "RequireLogin":'false',
     "RequireUserInfo":'true',
     "MaxDownloads": -1,
@@ -392,7 +392,7 @@ def create_share_link(token, item_id, req_user_info,filename):
 
     header=get_authorization_header(token)
     url="https://"+hostname+uri_path
-    response = requests.post(url,json=params,headers=header,verify=False)
+    response = session.post(url,json=params,headers=header)
     out = response.json()['Uri']
     return(out)
 
