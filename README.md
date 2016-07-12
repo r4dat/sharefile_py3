@@ -23,9 +23,7 @@ operations using GET, POST, PATCH, DELETE HTTP verbs. See api.sharefile.com for 
  
 Requirements:
  
-All required libraries should be part of most standard python installations.
- 
-Functions were tested with python 2.7.1
+Although not fully ported, the current version uses both the "standard" http and urlib libraries, as well as the Requests library.
  
 Authentication
  
