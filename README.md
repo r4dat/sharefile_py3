@@ -11,10 +11,12 @@ One relatively new item is the create_share_link function which creates the URLs
 
 The original (Python 2) source can be found here:
 http://api.sharefile.com/rest/samples/python.aspx
-Copyright (c) 2014 Citrix Systems, Inc.
-Under the MIT License.
 
-Currently licensed under the Apache License 2.0.
+Copyright (c) 2014 Citrix Systems, Inc.
+under the MIT License.
+
+The python 3 version is licensed under the Apache License 2.0.
+Copyright (c) 2015 Rob R, KHC
 
 The functions in this file will make use of the ShareFile API v3 to show some of the basic
 operations using GET, POST, PATCH, DELETE HTTP verbs. See api.sharefile.com for more information.
